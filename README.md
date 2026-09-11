@@ -129,3 +129,6 @@ it uses `--src-dir`; a project-root `middleware.ts`/`proxy.ts` is silently ignor
   to be flippable at runtime by an organizer and visible identically to every visitor, so it has
   to live somewhere all of them read from — the database, gated by the same RLS pattern as
   everything else (anyone can read it, only organizers can write it).
+
+## Demo Video
+<https://youtu.be/Ww9PGOI1Gy4>
