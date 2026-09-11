@@ -41,6 +41,29 @@ create policy "profiles: organizers read all" on public.profiles
 create policy "profiles: update own" on public.profiles
   for update using (auth.uid() = id);
 
+-- The policy above lets a user update any column on their own row,
+-- including role - which would let any applicant grant themselves
+-- organizer access with a single authenticated request. Block that at
+-- the trigger level (independent of which policy allowed the UPDATE):
+-- a role change is only allowed when the person making it is already
+-- an organizer.
+create or replace function public.prevent_role_self_escalation()
+returns trigger
+language plpgsql
+as $$
+begin
+  if new.role is distinct from old.role and not public.is_organizer() then
+    raise exception 'Only organizers can change a profile''s role.';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists profiles_prevent_role_self_escalation on public.profiles;
+create trigger profiles_prevent_role_self_escalation
+  before update on public.profiles
+  for each row execute procedure public.prevent_role_self_escalation();
+
 -- Auto-create a profile row whenever a new auth user signs up.
 create or replace function public.handle_new_user()
 returns trigger
