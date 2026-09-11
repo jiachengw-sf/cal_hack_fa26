@@ -10,13 +10,15 @@ export async function Nav() {
   } = await supabase.auth.getUser();
 
   let role: "applicant" | "organizer" | null = null;
+  let displayName: string | null = null;
   if (user) {
     const { data: profile } = await supabase
       .from("profiles")
-      .select("role")
+      .select("role, full_name, email")
       .eq("id", user.id)
       .single();
     role = profile?.role ?? "applicant";
+    displayName = profile?.full_name || profile?.email || user.email || null;
   }
 
   return (
@@ -34,6 +36,17 @@ export async function Nav() {
         </Link>
 
         <div className="flex items-center gap-4 text-sm">
+          {user && displayName && (
+            <span className="hidden text-xs text-stone-500 sm:inline">
+              Signed in as <strong className="font-bold text-stone-800">{displayName}</strong>
+              {role === "organizer" && (
+                <span className="ml-1.5 border border-panda-black bg-gold-400 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-panda-black">
+                  Organizer
+                </span>
+              )}
+            </span>
+          )}
+
           {!user && (
             <>
               <Link href="/login" className="text-stone-700 hover:text-stone-900">
