@@ -17,13 +17,26 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+-- A plain subquery on profiles inside a profiles policy would recurse into
+-- itself. SECURITY DEFINER runs as the function's owner (who created the
+-- table and so bypasses its RLS), breaking the recursion.
+create or replace function public.is_organizer()
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select exists (
+    select 1 from public.profiles where id = auth.uid() and role = 'organizer'
+  );
+$$;
+
 create policy "profiles: read own" on public.profiles
   for select using (auth.uid() = id);
 
 create policy "profiles: organizers read all" on public.profiles
-  for select using (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'organizer')
-  );
+  for select using (public.is_organizer());
 
 create policy "profiles: update own" on public.profiles
   for update using (auth.uid() = id);
@@ -100,14 +113,10 @@ create policy "applications: update own draft" on public.applications
 
 -- Organizers can read and update every application (grading).
 create policy "applications: organizers read all" on public.applications
-  for select using (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'organizer')
-  );
+  for select using (public.is_organizer());
 
 create policy "applications: organizers update all" on public.applications
-  for update using (
-    exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'organizer')
-  );
+  for update using (public.is_organizer());
 
 -- ---------------------------------------------------------------------------
 -- After running this file: sign up your own organizer account through the
