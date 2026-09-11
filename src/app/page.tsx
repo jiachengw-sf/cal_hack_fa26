@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button, Card } from "@/components/ui";
+import { BambooIcon, PandaIcon } from "@/components/pixel-icons";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function Home() {
@@ -21,22 +22,21 @@ export default async function Home() {
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-20 px-6 py-20">
       <section className="flex flex-col items-start gap-6">
-        <span className="rounded-full border border-teal-500/30 bg-teal-500/10 px-3 py-1 text-xs font-medium text-teal-300">
-          Applications open
+        <span className="border-2 border-panda-black bg-gold-400 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-panda-black">
+          Applications Open
         </span>
-        <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-          Apply to hack, or apply to judge — in one portal.
+        <h1 className="pixel-heading max-w-2xl text-2xl text-stone-900 sm:text-3xl">
+          Your next build grows here.
         </h1>
-        <p className="max-w-xl text-slate-400">
-          HackPortal is a lightweight application portal for our next hackathon. Sign up, tell
-          us about yourself, and track your status. Organizers review every application with
-          AI-assisted triage to keep decisions fast and fair.
+        <p className="max-w-xl text-stone-600">
+          Whether you&apos;re a lazy panda or a playful one, there&apos;s room in the grove.
+          Apply as a hacker or a judge, track your status, and let organizers handle the rest.
         </p>
         <div className="flex gap-3">
           {!user && (
             <>
               <Link href="/signup">
-                <Button>Start an application</Button>
+                <Button>▶ Start Building</Button>
               </Link>
               <Link href="/login">
                 <Button variant="secondary">I already have an account</Button>
@@ -63,15 +63,17 @@ export default async function Home() {
 
       <section className="grid gap-6 sm:grid-cols-2">
         <Card>
-          <h2 className="text-lg font-semibold text-white">Apply as a Hacker</h2>
-          <p className="mt-2 text-sm text-slate-400">
+          <BambooIcon className="mb-3.5 h-9 w-9" />
+          <h2 className="pixel-heading text-sm text-stone-900">Apply as a Hacker</h2>
+          <p className="mt-3 text-sm text-stone-600">
             Tell us about your background, skills, and what you want to build. Takes about five
             minutes.
           </p>
         </Card>
         <Card>
-          <h2 className="text-lg font-semibold text-white">Apply as a Judge</h2>
-          <p className="mt-2 text-sm text-slate-400">
+          <PandaIcon className="mb-3.5 h-9 w-9" />
+          <h2 className="pixel-heading text-sm text-stone-900">Apply as a Judge</h2>
+          <p className="mt-3 text-sm text-stone-600">
             Bring your expertise to evaluate demos. Tell us your background and availability for
             the event.
           </p>

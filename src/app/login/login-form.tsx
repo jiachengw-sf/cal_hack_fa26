@@ -24,7 +24,7 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
           autoComplete="current-password"
         />
       </Field>
-      {state.error && <p className="text-sm text-rose-400">{state.error}</p>}
+      {state.error && <p className="text-sm text-redstone-500">{state.error}</p>}
       <Button type="submit" disabled={pending}>
         {pending ? "Logging in…" : "Log in"}
       </Button>

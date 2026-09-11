@@ -28,7 +28,7 @@ export function SignupForm({ redirectTo }: { redirectTo: string }) {
           autoComplete="new-password"
         />
       </Field>
-      {state.error && <p className="text-sm text-rose-400">{state.error}</p>}
+      {state.error && <p className="text-sm text-redstone-500">{state.error}</p>}
       <Button type="submit" disabled={pending}>
         {pending ? "Creating account…" : "Create account"}
       </Button>

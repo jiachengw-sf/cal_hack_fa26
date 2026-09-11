@@ -33,8 +33,8 @@ export default async function ApplyPage() {
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-8 px-6 py-16">
       <div>
-        <h1 className="text-2xl font-semibold text-white">Choose an application</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <h1 className="pixel-heading text-lg text-stone-900">Choose an application</h1>
+        <p className="mt-1 text-sm text-stone-600">
           You can apply to more than one track. Each has its own short form.
         </p>
       </div>
@@ -47,10 +47,10 @@ export default async function ApplyPage() {
           return (
             <Card key={track} className="flex flex-col gap-4">
               <div className="flex items-start justify-between gap-2">
-                <h2 className="text-lg font-semibold text-white">{title}</h2>
+                <h2 className="pixel-heading text-sm text-stone-900">{title}</h2>
                 {status && <StatusBadge status={status} />}
               </div>
-              <p className="flex-1 text-sm text-slate-400">{description}</p>
+              <p className="flex-1 text-sm text-stone-600">{description}</p>
               {isLocked ? (
                 <Link href="/status">
                   <Button variant="secondary" className="w-full">

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Card, Select } from "@/components/ui";
+import { Button, Card, Input, Select } from "@/components/ui";
 import { StatusBadge } from "@/components/status-badge";
 import type { ApplicationStatus, Track } from "@/lib/database.types";
 
@@ -48,19 +48,14 @@ export default async function OrganizerDashboard({
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-16">
       <div>
-        <h1 className="text-2xl font-semibold text-white">Applications</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <h1 className="pixel-heading text-xl text-stone-900">Applications</h1>
+        <p className="mt-2 text-sm text-stone-600">
           {filtered.length} application{filtered.length === 1 ? "" : "s"}
         </p>
       </div>
 
       <form className="flex flex-wrap gap-3" method="get">
-        <input
-          name="q"
-          defaultValue={q}
-          placeholder="Search name or email…"
-          className="w-64 rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-teal-500 focus:outline-none"
-        />
+        <Input name="q" defaultValue={q} placeholder="Search name or email…" className="w-64" />
         <Select name="track" defaultValue={track ?? ""} className="w-40">
           <option value="">All tracks</option>
           <option value="hacker">Hacker</option>
@@ -73,17 +68,12 @@ export default async function OrganizerDashboard({
           <option value="waitlisted">Waitlisted</option>
           <option value="rejected">Rejected</option>
         </Select>
-        <button
-          type="submit"
-          className="rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-slate-950 hover:bg-teal-400"
-        >
-          Filter
-        </button>
+        <Button type="submit">Filter</Button>
       </form>
 
       <Card className="overflow-x-auto p-0">
         <table className="w-full min-w-[640px] text-left text-sm">
-          <thead className="border-b border-slate-800 text-xs uppercase tracking-wide text-slate-500">
+          <thead className="border-b-2 border-panda-black text-xs uppercase tracking-wide text-stone-500">
             <tr>
               <th className="px-4 py-3">Applicant</th>
               <th className="px-4 py-3">Track</th>
@@ -94,31 +84,31 @@ export default async function OrganizerDashboard({
           </thead>
           <tbody>
             {filtered.map((app) => (
-              <tr key={app.id} className="border-b border-slate-800/60 last:border-0">
+              <tr key={app.id} className="border-b border-stone-200 last:border-0">
                 <td className="px-4 py-3">
                   <Link
                     href={`/organizer/applications/${app.id}`}
-                    className="font-medium text-white hover:text-teal-400"
+                    className="font-medium text-stone-900 hover:text-bamboo-700"
                   >
                     {app.profiles?.full_name || app.profiles?.email || "Unknown"}
                   </Link>
-                  <div className="text-xs text-slate-500">{app.profiles?.email}</div>
+                  <div className="text-xs text-stone-500">{app.profiles?.email}</div>
                 </td>
-                <td className="px-4 py-3 text-slate-300">{TRACK_LABEL[app.track]}</td>
-                <td className="px-4 py-3 text-slate-300">
+                <td className="px-4 py-3 text-stone-700">{TRACK_LABEL[app.track]}</td>
+                <td className="px-4 py-3 text-stone-700">
                   {app.ai_score ? `${app.ai_score}/10` : "—"}
                 </td>
                 <td className="px-4 py-3">
                   <StatusBadge status={app.status} />
                 </td>
-                <td className="px-4 py-3 text-slate-400">
+                <td className="px-4 py-3 text-stone-600">
                   {app.submitted_at ? new Date(app.submitted_at).toLocaleDateString() : "—"}
                 </td>
               </tr>
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-slate-500">
+                <td colSpan={5} className="px-4 py-8 text-center text-stone-500">
                   No applications match these filters.
                 </td>
               </tr>

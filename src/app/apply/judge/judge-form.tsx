@@ -100,7 +100,7 @@ export function JudgeForm({ defaultValues }: { defaultValues?: Partial<JudgeForm
         <Textarea id="whyJudge" rows={3} {...register("whyJudge")} />
       </Field>
 
-      {error && <p className="text-sm text-rose-400">{error}</p>}
+      {error && <p className="text-sm text-redstone-500">{error}</p>}
 
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={isPending}>
@@ -109,7 +109,7 @@ export function JudgeForm({ defaultValues }: { defaultValues?: Partial<JudgeForm
         <Button type="button" variant="secondary" disabled={isPending} onClick={onSaveDraft}>
           Save draft
         </Button>
-        {savedAt && <span className="text-xs text-slate-500">Saved at {savedAt}</span>}
+        {savedAt && <span className="text-xs text-stone-500">Saved at {savedAt}</span>}
       </div>
     </form>
   );

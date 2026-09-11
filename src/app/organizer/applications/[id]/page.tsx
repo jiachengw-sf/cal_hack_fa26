@@ -61,16 +61,16 @@ export default async function ApplicationDetailPage({
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-6 px-6 py-16">
-      <Link href="/organizer" className="text-sm text-slate-400 hover:text-white">
+      <Link href="/organizer" className="text-sm text-stone-600 hover:text-stone-900">
         ← Back to all applications
       </Link>
 
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-white">
+          <h1 className="pixel-heading text-lg text-stone-900">
             {profile?.full_name || profile?.email}
           </h1>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-stone-600">
             {profile?.email} · {TRACK_LABEL[app.track as Track]} track
           </p>
         </div>
@@ -78,41 +78,41 @@ export default async function ApplicationDetailPage({
       </div>
 
       {app.ai_summary && (
-        <Card className="border-teal-500/30 bg-teal-500/5">
+        <Card className="border-bamboo-500/30 bg-bamboo-500/5">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-teal-300">AI triage summary</h2>
+            <h2 className="text-sm font-semibold text-bamboo-700">AI triage summary</h2>
             {app.ai_score && (
-              <span className="text-sm font-medium text-teal-300">{app.ai_score}/10</span>
+              <span className="text-sm font-medium text-bamboo-700">{app.ai_score}/10</span>
             )}
           </div>
-          <p className="mt-2 text-sm text-slate-300">{app.ai_summary}</p>
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-2 text-sm text-stone-700">{app.ai_summary}</p>
+          <p className="mt-2 text-xs text-stone-500">
             Assistive only — not shown to the applicant, and not a decision.
           </p>
         </Card>
       )}
 
       <Card className="flex flex-col gap-4">
-        <h2 className="text-sm font-semibold text-slate-300">Application answers</h2>
+        <h2 className="text-sm font-semibold text-stone-700">Application answers</h2>
         <dl className="grid gap-4 sm:grid-cols-2">
           {fields.map(([key, label]) => (
             <div key={String(key)}>
-              <dt className="text-xs uppercase tracking-wide text-slate-500">{label}</dt>
-              <dd className="mt-1 text-sm text-slate-200 whitespace-pre-wrap">
+              <dt className="text-xs uppercase tracking-wide text-stone-500">{label}</dt>
+              <dd className="mt-1 text-sm text-stone-800 whitespace-pre-wrap">
                 {formData[key as string] || "—"}
               </dd>
             </div>
           ))}
           {app.track === "hacker" && (
             <div>
-              <dt className="text-xs uppercase tracking-wide text-slate-500">Resume</dt>
-              <dd className="mt-1 text-sm text-slate-200">
+              <dt className="text-xs uppercase tracking-wide text-stone-500">Resume</dt>
+              <dd className="mt-1 text-sm text-stone-800">
                 {resumeUrl ? (
                   <a
                     href={resumeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-teal-400 hover:underline"
+                    className="text-bamboo-700 hover:underline"
                   >
                     {resumeIsUpload ? "Download uploaded resume" : "Open resume link"}
                   </a>
@@ -126,7 +126,7 @@ export default async function ApplicationDetailPage({
       </Card>
 
       <Card>
-        <h2 className="mb-4 text-sm font-semibold text-slate-300">Grade this application</h2>
+        <h2 className="mb-4 text-sm font-semibold text-stone-700">Grade this application</h2>
         <GradeForm
           applicationId={app.id}
           initialStatus={app.status}

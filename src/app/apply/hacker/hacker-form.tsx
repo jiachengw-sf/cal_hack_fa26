@@ -192,8 +192,8 @@ export function HackerForm({
       </Field>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-slate-200">Resume</label>
-        <div className="flex gap-4 text-sm text-slate-300">
+        <label className="text-sm font-medium text-stone-800">Resume</label>
+        <div className="flex gap-4 text-sm text-stone-700">
           <label className="flex items-center gap-2">
             <input type="radio" value="link" {...register("resumeType")} />
             Paste a link
@@ -212,7 +212,7 @@ export function HackerForm({
               {...register("resumeUrl")}
               className="mt-1"
             />
-            <p className="mt-1 text-xs text-slate-500">
+            <p className="mt-1 text-xs text-stone-500">
               A link to a hosted PDF, Google Drive, or portfolio site.
             </p>
           </Field>
@@ -223,9 +223,9 @@ export function HackerForm({
               type="file"
               accept=".pdf,.doc,.docx"
               onChange={handleFileChange}
-              className="mt-1 block w-full text-sm text-slate-300 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-800 file:px-3 file:py-2 file:text-sm file:text-slate-100 hover:file:bg-slate-700"
+              className="mt-1 block w-full text-sm text-stone-700 file:mr-3 file:rounded-none file:border-2 file:border-panda-black file:bg-stone-200 file:px-3 file:py-2 file:text-sm file:text-stone-900 hover:file:bg-stone-300"
             />
-            <p className="mt-1 text-xs text-slate-500">
+            <p className="mt-1 text-xs text-stone-500">
               PDF or Word document, up to 5MB.
               {isUploading && " Uploading…"}
               {!isUploading && uploadedFileName && ` Uploaded: ${uploadedFileName}`}
@@ -234,7 +234,7 @@ export function HackerForm({
         )}
       </div>
 
-      {error && <p className="text-sm text-rose-400">{error}</p>}
+      {error && <p className="text-sm text-redstone-500">{error}</p>}
 
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={isPending || isUploading}>
@@ -243,7 +243,7 @@ export function HackerForm({
         <Button type="button" variant="secondary" disabled={isPending} onClick={onSaveDraft}>
           Save draft
         </Button>
-        {savedAt && <span className="text-xs text-slate-500">Saved at {savedAt}</span>}
+        {savedAt && <span className="text-xs text-stone-500">Saved at {savedAt}</span>}
       </div>
     </form>
   );

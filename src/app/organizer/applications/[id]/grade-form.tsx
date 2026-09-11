@@ -71,12 +71,12 @@ export function GradeForm({
       <Field label="Notes (internal, other organizers can see this)" htmlFor="notes">
         <Textarea id="notes" rows={4} value={notes} onChange={(e) => setNotes(e.target.value)} />
       </Field>
-      {error && <p className="text-sm text-rose-400">{error}</p>}
+      {error && <p className="text-sm text-redstone-500">{error}</p>}
       <div className="flex items-center gap-3">
         <Button onClick={onSave} disabled={isPending}>
           {isPending ? "Saving…" : "Save decision"}
         </Button>
-        {saved && !isPending && <span className="text-xs text-emerald-400">Saved</span>}
+        {saved && !isPending && <span className="text-xs text-bamboo-700">Saved</span>}
       </div>
     </div>
   );
