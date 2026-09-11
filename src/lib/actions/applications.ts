@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { getApplicationsOpen } from "@/lib/actions/settings";
 import type { ApplicationStatus, FormData as AppFormData, Track } from "@/lib/database.types";
 
 export interface FormState {
@@ -48,6 +49,10 @@ export async function submitApplication(
 
   const { data: row, error } = await upsertDraft(track, data, user.id);
   if (error || !row) return { error: error?.message ?? "Could not save application." };
+
+  if (!(await getApplicationsOpen())) {
+    return { error: "Applications are closed. Your progress has been saved as a draft." };
+  }
 
   const { error: submitError } = await supabase
     .from("applications")

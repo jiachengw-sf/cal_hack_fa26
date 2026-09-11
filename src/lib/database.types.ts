@@ -118,6 +118,27 @@ export interface Database {
           },
         ];
       };
+      settings: {
+        Row: {
+          id: number;
+          applications_open: boolean;
+          updated_by: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          id?: number;
+          applications_open?: boolean;
+          updated_by?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          id?: number;
+          applications_open?: boolean;
+          updated_by?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

@@ -2,9 +2,11 @@ import Link from "next/link";
 import { Button, Card } from "@/components/ui";
 import { BambooIcon, PandaIcon } from "@/components/pixel-icons";
 import { createClient } from "@/lib/supabase/server";
+import { getApplicationsOpen } from "@/lib/actions/settings";
 
 export default async function Home() {
   const supabase = await createClient();
+  const applicationsOpen = await getApplicationsOpen();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -22,8 +24,12 @@ export default async function Home() {
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-20 px-6 py-20">
       <section className="flex flex-col items-start gap-6">
-        <span className="border-2 border-panda-black bg-gold-400 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-panda-black">
-          Applications Open
+        <span
+          className={`border-2 border-panda-black px-3 py-1.5 text-xs font-bold uppercase tracking-wide ${
+            applicationsOpen ? "bg-gold-400 text-panda-black" : "bg-redstone-500 text-white"
+          }`}
+        >
+          Applications {applicationsOpen ? "Open" : "Closed"}
         </span>
         <h1 className="pixel-heading max-w-2xl text-2xl text-stone-900 sm:text-3xl">
           Your next build grows here.
@@ -33,7 +39,7 @@ export default async function Home() {
           Apply as a hacker or a judge, track your status, and let organizers handle the rest.
         </p>
         <div className="flex gap-3">
-          {!user && (
+          {!user && applicationsOpen && (
             <>
               <Link href="/signup">
                 <Button>▶ Start Building</Button>
@@ -42,6 +48,11 @@ export default async function Home() {
                 <Button variant="secondary">I already have an account</Button>
               </Link>
             </>
+          )}
+          {!user && !applicationsOpen && (
+            <Link href="/login">
+              <Button variant="secondary">I already have an account</Button>
+            </Link>
           )}
           {user && role === "organizer" && (
             <Link href="/organizer">

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button, Card } from "@/components/ui";
 import { StatusBadge } from "@/components/status-badge";
+import { getApplicationsOpen } from "@/lib/actions/settings";
 import type { Track } from "@/lib/database.types";
 
 const TRACKS: { track: Track; title: string; description: string }[] = [
@@ -19,6 +20,7 @@ const TRACKS: { track: Track; title: string; description: string }[] = [
 
 export default async function ApplyPage() {
   const supabase = await createClient();
+  const applicationsOpen = await getApplicationsOpen();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -39,10 +41,19 @@ export default async function ApplyPage() {
         </p>
       </div>
 
+      {!applicationsOpen && (
+        <Card className="border-redstone-500/40 bg-redstone-500/5">
+          <p className="text-sm font-medium text-redstone-500">
+            Applications are currently closed. You can&apos;t start a new application right now.
+          </p>
+        </Card>
+      )}
+
       <div className="grid gap-6 sm:grid-cols-2">
         {TRACKS.map(({ track, title, description }) => {
           const status = byTrack.get(track);
           const isLocked = status && status !== "draft";
+          const canStart = applicationsOpen || status === "draft";
 
           return (
             <Card key={track} className="flex flex-col gap-4">
@@ -57,12 +68,16 @@ export default async function ApplyPage() {
                     View status
                   </Button>
                 </Link>
-              ) : (
+              ) : canStart ? (
                 <Link href={`/apply/${track}`}>
                   <Button className="w-full">
                     {status === "draft" ? "Continue application" : "Start application"}
                   </Button>
                 </Link>
+              ) : (
+                <Button className="w-full" disabled>
+                  Applications closed
+                </Button>
               )}
             </Card>
           );

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button, Card, Input, Select } from "@/components/ui";
 import { StatusBadge } from "@/components/status-badge";
+import { ApplicationsToggle } from "@/components/applications-toggle";
+import { getApplicationsOpen } from "@/lib/actions/settings";
 import type { ApplicationStatus, Track } from "@/lib/database.types";
 
 const TRACK_LABEL: Record<Track, string> = { hacker: "Hacker", judge: "Judge" };
@@ -22,6 +24,7 @@ export default async function OrganizerDashboard({
 }) {
   const { track, status, q } = await searchParams;
   const supabase = await createClient();
+  const applicationsOpen = await getApplicationsOpen();
 
   let query = supabase
     .from("applications")
@@ -46,11 +49,14 @@ export default async function OrganizerDashboard({
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-16">
-      <div>
-        <h1 className="pixel-heading text-xl text-stone-900">Applications</h1>
-        <p className="mt-2 text-sm text-stone-600">
-          {filtered.length} application{filtered.length === 1 ? "" : "s"}
-        </p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="pixel-heading text-xl text-stone-900">Applications</h1>
+          <p className="mt-2 text-sm text-stone-600">
+            {filtered.length} application{filtered.length === 1 ? "" : "s"}
+          </p>
+        </div>
+        <ApplicationsToggle initialOpen={applicationsOpen} />
       </div>
 
       <form className="flex flex-wrap gap-3" method="get">
