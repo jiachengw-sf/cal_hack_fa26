@@ -16,7 +16,6 @@ const HACKER_FIELDS: [keyof HackerFormData, string][] = [
   ["skills", "Skills"],
   ["whyAttend", "Why they want to attend"],
   ["builtSomethingCool", "Something cool they've built"],
-  ["resumeUrl", "Resume"],
 ];
 
 const JUDGE_FIELDS: [keyof JudgeFormData, string][] = [
@@ -47,6 +46,18 @@ export default async function ApplicationDetailPage({
   const fields = app.track === "hacker" ? HACKER_FIELDS : JUDGE_FIELDS;
   const formData = app.form_data as unknown as Record<string, string>;
   const profile = app.profiles as unknown as { email: string; full_name: string | null } | null;
+
+  let resumeUrl: string | null = null;
+  let resumeIsUpload = false;
+  if (app.track === "hacker" && formData.resumeFilePath) {
+    const { data: signed } = await supabase.storage
+      .from("resumes")
+      .createSignedUrl(formData.resumeFilePath, 3600);
+    resumeUrl = signed?.signedUrl ?? null;
+    resumeIsUpload = true;
+  } else if (app.track === "hacker" && formData.resumeUrl) {
+    resumeUrl = formData.resumeUrl;
+  }
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-6 px-6 py-16">
@@ -92,6 +103,25 @@ export default async function ApplicationDetailPage({
               </dd>
             </div>
           ))}
+          {app.track === "hacker" && (
+            <div>
+              <dt className="text-xs uppercase tracking-wide text-slate-500">Resume</dt>
+              <dd className="mt-1 text-sm text-slate-200">
+                {resumeUrl ? (
+                  <a
+                    href={resumeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-teal-400 hover:underline"
+                  >
+                    {resumeIsUpload ? "Download uploaded resume" : "Open resume link"}
+                  </a>
+                ) : (
+                  "—"
+                )}
+              </dd>
+            </div>
+          )}
         </dl>
       </Card>
 

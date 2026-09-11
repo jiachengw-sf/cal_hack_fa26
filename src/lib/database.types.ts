@@ -15,7 +15,9 @@ export interface HackerFormData {
   skills: string;
   whyAttend: string;
   builtSomethingCool: string;
+  resumeType: "link" | "file";
   resumeUrl?: string;
+  resumeFilePath?: string;
 }
 
 export interface JudgeFormData {

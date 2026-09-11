@@ -119,6 +119,33 @@ create policy "applications: organizers update all" on public.applications
   for update using (public.is_organizer());
 
 -- ---------------------------------------------------------------------------
+-- resume uploads (Supabase Storage)
+-- ---------------------------------------------------------------------------
+-- Private bucket: files are only reachable via a signed URL generated
+-- server-side for the owner or an organizer, never a public URL.
+insert into storage.buckets (id, name, public)
+values ('resumes', 'resumes', false)
+on conflict (id) do nothing;
+
+-- Uploaded paths are namespaced "<user_id>/<filename>" so ownership can be
+-- checked from the path alone via storage.foldername().
+create policy "resumes: applicants upload own" on storage.objects
+  for insert with check (
+    bucket_id = 'resumes' and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+create policy "resumes: applicants replace own" on storage.objects
+  for update using (
+    bucket_id = 'resumes' and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+create policy "resumes: read own or organizer" on storage.objects
+  for select using (
+    bucket_id = 'resumes'
+    and ((storage.foldername(name))[1] = auth.uid()::text or public.is_organizer())
+  );
+
+-- ---------------------------------------------------------------------------
 -- After running this file: sign up your own organizer account through the
 -- app, then run the following once (with your email) to grant it access to
 -- the /organizer dashboard:

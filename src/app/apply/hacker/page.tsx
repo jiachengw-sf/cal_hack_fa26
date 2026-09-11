@@ -30,7 +30,10 @@ export default async function HackerApplyPage() {
         </p>
       </div>
       <Card>
-        <HackerForm defaultValues={application?.form_data as HackerFormData | undefined} />
+        <HackerForm
+          userId={user!.id}
+          defaultValues={application?.form_data as HackerFormData | undefined}
+        />
       </Card>
     </div>
   );

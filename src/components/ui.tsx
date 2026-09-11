@@ -11,7 +11,7 @@ export function Field({
   hint,
   children,
 }: {
-  label: string;
+  label?: string;
   htmlFor: string;
   error?: string;
   hint?: string;
@@ -19,9 +19,11 @@ export function Field({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={htmlFor} className="text-sm font-medium text-slate-200">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={htmlFor} className="text-sm font-medium text-slate-200">
+          {label}
+        </label>
+      )}
       {children}
       {hint && !error && <p className="text-xs text-slate-500">{hint}</p>}
       {error && <p className="text-xs text-rose-400">{error}</p>}
