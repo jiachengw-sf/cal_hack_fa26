@@ -1,7 +1,23 @@
 import Link from "next/link";
 import { Button, Card } from "@/components/ui";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let role: "applicant" | "organizer" | null = null;
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+    role = profile?.role ?? "applicant";
+  }
+
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-20 px-6 py-20">
       <section className="flex flex-col items-start gap-6">
@@ -17,12 +33,31 @@ export default function Home() {
           AI-assisted triage to keep decisions fast and fair.
         </p>
         <div className="flex gap-3">
-          <Link href="/signup">
-            <Button>Start an application</Button>
-          </Link>
-          <Link href="/login">
-            <Button variant="secondary">I already have an account</Button>
-          </Link>
+          {!user && (
+            <>
+              <Link href="/signup">
+                <Button>Start an application</Button>
+              </Link>
+              <Link href="/login">
+                <Button variant="secondary">I already have an account</Button>
+              </Link>
+            </>
+          )}
+          {user && role === "organizer" && (
+            <Link href="/organizer">
+              <Button>Go to organizer dashboard</Button>
+            </Link>
+          )}
+          {user && role === "applicant" && (
+            <>
+              <Link href="/apply">
+                <Button>Go to my applications</Button>
+              </Link>
+              <Link href="/status">
+                <Button variant="secondary">Check my status</Button>
+              </Link>
+            </>
+          )}
         </div>
       </section>
 
