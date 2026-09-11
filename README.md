@@ -89,9 +89,14 @@ src/
     supabase/                     browser/server/middleware Supabase clients
     ai-review.ts                  Claude API call for AI-assisted triage
     database.types.ts             hand-written Supabase table types
+    proxy.ts                      session refresh + route protection (auth, organizer-only)
 supabase/migration.sql            full schema + RLS policies + triggers
-middleware.ts                     session refresh + route protection (auth, organizer-only)
 ```
+
+Note: Next.js 16 renamed the `middleware.ts` convention to `proxy.ts` — same feature
+(runs before every request), new name. It must live at `src/proxy.ts` in this project since
+it uses `--src-dir`; a project-root `middleware.ts`/`proxy.ts` is silently ignored when an
+`src/` layout is in use.
 
 ## Design notes / why these choices
 
