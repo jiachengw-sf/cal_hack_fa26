@@ -77,21 +77,6 @@ export default async function ApplicationDetailPage({
         <StatusBadge status={app.status} />
       </div>
 
-      {app.ai_summary && (
-        <Card className="border-bamboo-500/30 bg-bamboo-500/5">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-bamboo-700">AI triage summary</h2>
-            {app.ai_score && (
-              <span className="text-sm font-medium text-bamboo-700">{app.ai_score}/10</span>
-            )}
-          </div>
-          <p className="mt-2 text-sm text-stone-700">{app.ai_summary}</p>
-          <p className="mt-2 text-xs text-stone-500">
-            Assistive only — not shown to the applicant, and not a decision.
-          </p>
-        </Card>
-      )}
-
       <Card className="flex flex-col gap-4">
         <h2 className="text-sm font-semibold text-stone-700">Application answers</h2>
         <dl className="grid gap-4 sm:grid-cols-2">

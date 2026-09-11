@@ -40,7 +40,7 @@ export default async function AnalyticsPage() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("applications")
-    .select("track, status, organizer_score, ai_score")
+    .select("track, status, organizer_score")
     .neq("status", "draft");
 
   const applications = data ?? [];
@@ -50,11 +50,6 @@ export default async function AnalyticsPage() {
   const avgScore =
     scored.length > 0
       ? (scored.reduce((sum, a) => sum + Number(a.organizer_score), 0) / scored.length).toFixed(1)
-      : "—";
-  const aiScored = applications.filter((a) => a.ai_score !== null);
-  const avgAiScore =
-    aiScored.length > 0
-      ? (aiScored.reduce((sum, a) => sum + Number(a.ai_score), 0) / aiScored.length).toFixed(1)
       : "—";
 
   return (
@@ -66,7 +61,7 @@ export default async function AnalyticsPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-3">
         <Card className="text-center">
           <div className="pixel-heading text-lg text-stone-900">{total}</div>
           <div className="mt-1 text-xs text-stone-500">Submitted</div>
@@ -80,10 +75,6 @@ export default async function AnalyticsPage() {
         <Card className="text-center">
           <div className="pixel-heading text-lg text-stone-900">{avgScore}</div>
           <div className="mt-1 text-xs text-stone-500">Avg organizer score</div>
-        </Card>
-        <Card className="text-center">
-          <div className="pixel-heading text-lg text-stone-900">{avgAiScore}</div>
-          <div className="mt-1 text-xs text-stone-500">Avg AI score</div>
         </Card>
       </div>
 

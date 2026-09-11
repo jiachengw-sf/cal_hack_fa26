@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { generateAiReview } from "@/lib/ai-review";
 import type { ApplicationStatus, FormData as AppFormData, Track } from "@/lib/database.types";
 
 export interface FormState {
@@ -55,19 +54,6 @@ export async function submitApplication(
     .update({ status: "submitted", submitted_at: new Date().toISOString() })
     .eq("id", row.id);
   if (submitError) return { error: submitError.message };
-
-  // Best-effort AI triage; failures here should never block a submission.
-  try {
-    const review = await generateAiReview(track, data);
-    if (review) {
-      await supabase
-        .from("applications")
-        .update({ ai_score: review.score, ai_summary: review.summary })
-        .eq("id", row.id);
-    }
-  } catch (err) {
-    console.error("AI review failed", err);
-  }
 
   redirect("/status");
 }

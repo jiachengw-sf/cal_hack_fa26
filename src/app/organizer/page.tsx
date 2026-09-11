@@ -10,7 +10,6 @@ interface Row {
   id: string;
   track: Track;
   status: ApplicationStatus;
-  ai_score: number | null;
   organizer_score: number | null;
   submitted_at: string | null;
   profiles: { email: string; full_name: string | null } | null;
@@ -27,7 +26,7 @@ export default async function OrganizerDashboard({
   let query = supabase
     .from("applications")
     .select(
-      "id, track, status, ai_score, organizer_score, submitted_at, profiles!applications_user_id_fkey(email, full_name)"
+      "id, track, status, organizer_score, submitted_at, profiles!applications_user_id_fkey(email, full_name)"
     )
     .neq("status", "draft")
     .order("submitted_at", { ascending: false });
@@ -77,7 +76,6 @@ export default async function OrganizerDashboard({
             <tr>
               <th className="px-4 py-3">Applicant</th>
               <th className="px-4 py-3">Track</th>
-              <th className="px-4 py-3">AI score</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">Submitted</th>
             </tr>
@@ -95,9 +93,6 @@ export default async function OrganizerDashboard({
                   <div className="text-xs text-stone-500">{app.profiles?.email}</div>
                 </td>
                 <td className="px-4 py-3 text-stone-700">{TRACK_LABEL[app.track]}</td>
-                <td className="px-4 py-3 text-stone-700">
-                  {app.ai_score ? `${app.ai_score}/10` : "—"}
-                </td>
                 <td className="px-4 py-3">
                   <StatusBadge status={app.status} />
                 </td>
@@ -108,7 +103,7 @@ export default async function OrganizerDashboard({
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-stone-500">
+                <td colSpan={4} className="px-4 py-8 text-center text-stone-500">
                   No applications match these filters.
                 </td>
               </tr>

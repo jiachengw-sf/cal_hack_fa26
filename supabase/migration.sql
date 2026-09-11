@@ -92,8 +92,6 @@ create table if not exists public.applications (
   status text not null default 'draft'
     check (status in ('draft', 'submitted', 'accepted', 'waitlisted', 'rejected')),
   form_data jsonb not null default '{}'::jsonb,
-  ai_score numeric,
-  ai_summary text,
   organizer_score numeric,
   organizer_notes text,
   reviewed_by uuid references public.profiles (id),

@@ -65,8 +65,6 @@ export interface Database {
           track: Track;
           status: ApplicationStatus;
           form_data: FormData;
-          ai_score: number | null;
-          ai_summary: string | null;
           organizer_score: number | null;
           organizer_notes: string | null;
           reviewed_by: string | null;
@@ -81,8 +79,6 @@ export interface Database {
           track: Track;
           status?: ApplicationStatus;
           form_data: FormData;
-          ai_score?: number | null;
-          ai_summary?: string | null;
           organizer_score?: number | null;
           organizer_notes?: string | null;
           reviewed_by?: string | null;
@@ -97,8 +93,6 @@ export interface Database {
           track?: Track;
           status?: ApplicationStatus;
           form_data?: FormData;
-          ai_score?: number | null;
-          ai_summary?: string | null;
           organizer_score?: number | null;
           organizer_notes?: string | null;
           reviewed_by?: string | null;
