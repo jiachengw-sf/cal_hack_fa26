@@ -43,6 +43,9 @@ export async function Nav() {
               <Link href="/organizer" className="text-slate-300 hover:text-white">
                 Organizer dashboard
               </Link>
+              <Link href="/organizer/analytics" className="text-slate-300 hover:text-white">
+                Analytics
+              </Link>
               <form action={logOut}>
                 <Button variant="secondary" type="submit">
                   Log out

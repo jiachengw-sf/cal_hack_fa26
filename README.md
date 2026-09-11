@@ -1,7 +1,8 @@
 # HackPortal
 
 A miniature hackathon application portal: applicants sign up and apply as a **Hacker** or a
-**Judge**, and organizers review, AI-triage, and grade every application from one dashboard.
+**Judge**, and organizers review, track progress on, and grade every application from one
+dashboard.
 
 Built for the Cal Hacks tech team take-home assessment.
 
@@ -10,7 +11,7 @@ Built for the Cal Hacks tech team take-home assessment.
 - **Next.js 16** (App Router) + **TypeScript**
 - **Tailwind CSS 4**
 - **Supabase** (Postgres + Auth, with Row Level Security)
-- **Anthropic Claude API** for AI-assisted application triage
+- **Anthropic Claude API** for optional AI-assisted application triage
 - Deployed on **Vercel**
 
 ## Features
@@ -23,10 +24,15 @@ Built for the Cal Hacks tech team take-home assessment.
 - `/organizer` — searchable, filterable table of every submitted application.
 - `/organizer/applications/[id]` — full application detail + a grading panel (score, notes,
   accept/waitlist/reject).
-- **AI-assisted review**: on submission, the application is sent to Claude to generate a short
-  summary and a 1–10 fit-score suggestion. This is shown *only* to organizers, as a starting
-  point next to their own manual grade — it never makes the decision and is never shown to the
-  applicant.
+- **`/organizer/analytics`** (the added feature): a live read on application volume, the
+  status funnel (submitted → accepted/waitlisted/rejected), and grading progress across both
+  tracks. Built for the organizer's actual bottleneck at scale — knowing how much grading is
+  left and how it's trending — without needing to page through every row.
+- **AI-assisted review** (optional, needs `ANTHROPIC_API_KEY`): on submission, the application
+  is sent to Claude to generate a short summary and a 1–10 fit-score suggestion, shown only to
+  organizers as a starting point next to their own manual grade. Never shown to the applicant,
+  never makes the decision itself, and the app works fine with this unset — it's a bonus on top
+  of the analytics feature above, not required for the core flow.
 - Row Level Security enforced in Postgres: applicants can only ever read/write their own rows
   (and only while still a draft); organizers can read/update every row. This is enforced at the
   database layer, so it holds even if the app's UI/route checks were bypassed.
